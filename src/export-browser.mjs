@@ -1,6 +1,6 @@
 import { pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
-import { page as pageSize } from './config.mjs';
+import { page as pageSize, textFit } from './config.mjs';
 
 const MM_TO_CSS_PX = 96 / 25.4;
 const viewport = {
@@ -40,7 +40,41 @@ function findOverflow() {
   return problems;
 }
 
-/** Opens one HTML poster, verifies the layout and writes the requested files. */
+/** Runs inside the page: sets the text scale and re-aligns the background pattern. */
+function applyScale(scale) {
+  document.documentElement.style.setProperty('--scale', String(scale));
+  window.alignPatterns();
+}
+
+/**
+ * Binary search for the largest text scale at which nothing overflows.
+ * Returns { scale, problems }; problems is non-empty when even minScale does not fit.
+ */
+async function fitTextScale(tab, { minScale, maxScale, steps }) {
+  const problemsAt = async (scale) => {
+    await tab.evaluate(applyScale, scale);
+    return tab.evaluate(findOverflow);
+  };
+  const atMin = await problemsAt(minScale);
+  if (atMin.length) return { scale: minScale, problems: atMin };
+  let [fits, overflows] = [minScale, maxScale];
+  if ((await problemsAt(maxScale)).length === 0) fits = maxScale;
+  else {
+    for (let i = 0; i < steps; i += 1) {
+      const mid = (fits + overflows) / 2;
+      if ((await problemsAt(mid)).length === 0) fits = mid;
+      else overflows = mid;
+    }
+  }
+  const scale = Math.floor(fits * 1000) / 1000;
+  await tab.evaluate(applyScale, scale);
+  return { scale, problems: [] };
+}
+
+/**
+ * Opens one HTML poster, fits the text to the page and writes the requested files.
+ * Returns the text scale that was used.
+ */
 export async function exportPoster(browser, htmlFile, { pdfFile, pngs = [] }) {
   const url = pathToFileURL(htmlFile).href;
   const open = async (deviceScaleFactor = 1) => {
@@ -52,10 +86,12 @@ export async function exportPoster(browser, htmlFile, { pdfFile, pngs = [] }) {
   };
 
   const { context, tab } = await open();
-  const problems = await tab.evaluate(findOverflow);
+  const { scale, problems } = await fitTextScale(tab, textFit);
   if (problems.length) {
     await context.close();
-    throw new Error(`Layout does not fit (${htmlFile}):\n  ${problems.join('\n  ')}`);
+    throw new Error(
+      `Layout does not fit even at text scale ${textFit.minScale} (${htmlFile}):\n  ${problems.join('\n  ')}`,
+    );
   }
   if (pdfFile) {
     await tab.pdf({ path: pdfFile, preferCSSPageSize: true, printBackground: true });
@@ -64,9 +100,11 @@ export async function exportPoster(browser, htmlFile, { pdfFile, pngs = [] }) {
 
   for (const { file, widthPx } of pngs) {
     const shot = await open(widthPx / (pageSize.widthMm * MM_TO_CSS_PX));
+    await shot.tab.evaluate(applyScale, scale);
     await shot.tab.locator('.page').screenshot({ path: file });
     await shot.context.close();
   }
+  return scale;
 }
 
 export const launchBrowser = () => chromium.launch();

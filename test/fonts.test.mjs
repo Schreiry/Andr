@@ -31,7 +31,7 @@ describe('font coverage', () => {
         .map(([, text]) => `${typeset(text, lang)} ${headingCase(text, doc.meta)}`)
         .join(' ');
       const missing = [...new Set(printed.replace(/\*\*/g, ''))].filter(
-        (ch) => !/\s/.test(ch) && ch !== ' ' && !covered.has(ch.codePointAt(0)),
+        (ch) => !/\s/.test(ch) && ch !== '\u00A0' && !covered.has(ch.codePointAt(0)),
       );
       assert.deepEqual(missing, [], `characters without a glyph: ${missing.join(' ')}`);
     });

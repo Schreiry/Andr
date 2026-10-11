@@ -1,6 +1,8 @@
 /* Poster layout. Sizes are physical (mm/pt): the page is printed on A4.
    Font weights (400/700/850) and stretches (80%/72%) must match the static
-   instances listed in assets/fonts/faces.json. */
+   instances listed in assets/fonts/faces.json.
+   --scale enlarges or shrinks all text and the spacing around it. The build
+   picks the largest value at which everything still fits (see src/config.mjs). */
 
 :root {
   --ink: #000;
@@ -10,7 +12,8 @@
   --margin-x: 10.5mm;
   --panel-w: 82mm;
   --gap: 7mm;
-  --body-size: 9.6pt;
+  --scale: 1;
+  --body-size: calc(9.6pt * var(--scale));
   --body-leading: 1.3;
   --body-stretch: 80%;
   --heading-stretch: 72%;
@@ -87,7 +90,7 @@ strong {
 }
 
 .title {
-  font-size: 29pt;
+  font-size: calc(29pt * var(--scale));
   line-height: 1.08;
   font-weight: var(--heading-weight);
   font-stretch: var(--heading-stretch);
@@ -106,13 +109,13 @@ strong {
 
 .intro {
   padding-top: 1mm;
-  font-size: 9.8pt;
+  font-size: calc(9.8pt * var(--scale));
   line-height: 1.3;
 }
 
 .intro__lead {
   display: block;
-  font-size: 10.6pt;
+  font-size: calc(10.6pt * var(--scale));
 }
 
 /* ---- Body ------------------------------------------------------------- */
@@ -145,13 +148,13 @@ strong {
 }
 
 .heading--section {
-  font-size: 19pt;
-  margin: 3.5mm 0 5mm;
+  font-size: calc(19pt * var(--scale));
+  margin: calc(3.5mm * var(--scale)) 0 calc(5mm * var(--scale));
 }
 
 .heading--block {
-  font-size: 13pt;
-  margin-bottom: 3.2mm;
+  font-size: calc(13pt * var(--scale));
+  margin-bottom: calc(3.2mm * var(--scale));
 }
 
 /* Service terms: two columns of short paragraphs. */
@@ -163,13 +166,13 @@ strong {
 }
 
 .rule + .rule {
-  margin-top: 3.8mm;
+  margin-top: calc(3.8mm * var(--scale));
 }
 
 /* "Not allowed" box with a dotted frame and the label sitting on the frame. */
 
 .forbidden {
-  --title-half: 2.7mm; /* half of the label line: the frame runs through it */
+  --title-half: calc(2.7mm * var(--scale)); /* half of the label line: the frame runs through it */
   position: relative;
   margin-top: auto;
   padding: 0 6mm 6mm 5.5mm;
@@ -200,9 +203,9 @@ strong {
 .forbidden__title {
   position: relative;
   display: inline-block;
-  margin: 0 0 6mm -5.5mm;
+  margin: 0 0 calc(6mm * var(--scale)) -5.5mm;
   padding: 0 2.5mm 0 3mm;
-  font-size: 12.5pt;
+  font-size: calc(12.5pt * var(--scale));
   line-height: 1.25;
   font-weight: var(--heading-weight);
   font-stretch: var(--heading-stretch);
@@ -212,12 +215,12 @@ strong {
 .forbidden__list {
   list-style: none;
   display: grid;
-  gap: 3.2mm;
+  gap: calc(3.2mm * var(--scale));
 }
 
 .forbidden__item {
   display: grid;
-  grid-template-columns: 9mm 1fr;
+  grid-template-columns: calc(9mm * var(--scale)) 1fr;
   column-gap: 3.5mm;
   align-items: center;
 }
@@ -225,16 +228,16 @@ strong {
 .badge {
   display: grid;
   place-items: center;
-  width: 9mm;
-  height: 9mm;
+  width: calc(9mm * var(--scale));
+  height: calc(9mm * var(--scale));
   border: 0.45mm solid var(--gold);
   border-radius: 50%;
   color: var(--gold);
 }
 
 .badge svg {
-  width: 5.6mm;
-  height: 5.6mm;
+  width: calc(5.6mm * var(--scale));
+  height: calc(5.6mm * var(--scale));
   stroke-width: 1.6;
 }
 
@@ -255,13 +258,13 @@ strong {
 
 .icon-list__item {
   display: grid;
-  grid-template-columns: 7mm 1fr;
+  grid-template-columns: calc(7mm * var(--scale)) 1fr;
   column-gap: 3mm;
   align-items: start;
 }
 
 .icon-list__item + .icon-list__item {
-  margin-top: 2.8mm;
+  margin-top: calc(2.8mm * var(--scale));
 }
 
 .icon {
@@ -270,8 +273,8 @@ strong {
 }
 
 .icon svg {
-  width: 6.4mm;
-  height: 6.4mm;
+  width: calc(6.4mm * var(--scale));
+  height: calc(6.4mm * var(--scale));
   stroke-width: 1.5;
 }
 
@@ -291,6 +294,6 @@ strong {
 }
 
 .icon--small svg {
-  width: 5mm;
-  height: 5mm;
+  width: calc(5mm * var(--scale));
+  height: calc(5mm * var(--scale));
 }

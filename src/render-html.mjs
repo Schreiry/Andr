@@ -146,12 +146,16 @@ ${css}
 </main>
 <script>
   // Elements that repeat the page pattern get it shifted so it lines up with the page.
-  document.fonts.ready.then(() => {
+  // Called again by the export after it changes the text scale.
+  window.alignPatterns = () => {
     const page = document.querySelector('.page').getBoundingClientRect();
     for (const el of document.querySelectorAll('[data-pattern]')) {
       const box = el.getBoundingClientRect();
       el.style.backgroundPosition = (page.left - box.left) + 'px ' + (page.top - box.top) + 'px';
     }
+  };
+  document.fonts.ready.then(() => {
+    window.alignPatterns();
     document.documentElement.dataset.ready = 'true';
   });
 </script>

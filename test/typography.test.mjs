@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { headingCase, parseInline, typeset } from '../src/typography.mjs';
 
-const NBSP = ' ';
+const NBSP = '\u00A0';
 
 describe('parseInline', () => {
   it('splits bold runs', () => {
@@ -34,12 +34,19 @@ describe('typeset', () => {
     assert.equal(typeset('ჩაის სმაზე კი', 'ka'), `ჩაის სმაზე${NBSP}კი`);
   });
 
+  it('keeps English articles with the next word', () => {
+    assert.equal(
+      typeset('choose a tea for the next session', 'en'),
+      `choose a${NBSP}tea for the${NBSP}next session`,
+    );
+  });
+
   it('sees through bold markers', () => {
     assert.equal(typeset('**за 90 минут**', 'ru'), `**за${NBSP}90${NBSP}минут**`);
   });
 
   it('does not break short compounds at the hyphen', () => {
-    assert.equal(typeset('собака-поводырь', 'ru'), 'собака‑поводырь');
+    assert.equal(typeset('собака-поводырь', 'ru'), 'собака\u2011поводырь');
   });
 });
 

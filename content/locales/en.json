@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "lang": "en",
+    "bcp47": "en-GB",
+    "name": "English",
+    "role": "translation",
+    "uppercaseHeadings": true,
+    "docxFont": "Arial"
+  },
+  "title": ["Tea Club", "House Rules"],
+  "intro": {
+    "lead": "Our club is our home:",
+    "body": "we create a warm, welcoming space for our guests. We gather here for the tea — its taste, its aroma and the quiet it calls for. To make every tea session a pleasure for everyone, we have a few house rules."
+  },
+  "sections": {
+    "services": {
+      "title": "Service terms",
+      "items": {
+        "arrival": "Last admission for a “Pin Cha” tea session is **40 minutes before closing**; for boiled tea, **90 minutes before closing**. Every tea session ends at closing time.",
+        "walkIn": "If you arrive without a booking, you may have to wait **up to 20 minutes** for a tea master.",
+        "duration": "**Each tea session lasts up to an hour and a half.** To stay longer, please choose a tea for a new session.",
+        "takeaway": "The “Tea to Go” service **does not include a seat at a tea table**.",
+        "pets": "Pets are welcome in the shop, but **please join tea sessions without them**. Guide dogs are the only exception.",
+        "ownTea": "**We brew only teas chosen from our own selection.** We do not brew tea you bring with you, even if you bought it in our shop.",
+        "oneTea": "**We brew one tea per group**, using a single set of the club’s own teaware.",
+        "boiling": "**Boiled tea is prepared only by a tea master.** Please do not boil tea yourself.",
+        "damage": "If you accidentally or deliberately damage anything belonging to the club, the management **may ask you to cover the cost**."
+      }
+    },
+    "contacts": {
+      "title": "Bookings and questions:",
+      "items": {
+        "phone": "+995 ___ __ __ __",
+        "instagram": "@________"
+      }
+    },
+    "forbidden": {
+      "title": "not allowed in the tea club",
+      "items": {
+        "smoking": "Smoking cigarettes, vapes or any electronic smoking devices",
+        "alcohol": "Drinking alcohol, using drugs or being intoxicated",
+        "food": "Eating any food, including snacks and sweets, or drinking anything you brought with you. Exception: when your health requires it"
+      }
+    },
+    "atmosphere": {
+      "title": "For a peaceful atmosphere, please:",
+      "items": {
+        "silent": "Switch your phone to silent mode",
+        "headphones": "Play music and videos through headphones only",
+        "voice": "Speak softly and avoid swearing",
+        "calls": "Take phone calls in the entrance area or the shop; do not hold video conferences or online classes",
+        "photo": "Take photos without flash and do not photograph other guests without their permission"
+      }
+    },
+    "respect": {
+      "title": "Out of respect for one another, please:",
+      "items": {
+        "privacy": "Do not join other guests’ conversations uninvited or start loud debates",
+        "perfume": "Avoid wearing strong perfume — it overpowers the aroma of the tea",
+        "intimacy": "Leave displays of passion and romantic intimacy outside the club"
+      }
+    },
+    "comfort": {
+      "title": "For a comfortable stay, please:",
+      "items": {
+        "outerwear": "Take off your shoes and outerwear",
+        "valuables": "Do not leave valuables in the cloakroom",
+        "shoeCovers": "Wear shoe covers over your socks, not over your shoes",
+        "slippers": "Take off your slippers before stepping onto the raised platform"
+      }
+    }
+  }
+}

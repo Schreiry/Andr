@@ -9,6 +9,7 @@ const NB_HYPHEN = '\u2011';
 const glueRules = {
   ru: { after: /^[а-яё]{1,2}$/i, before: ['же', 'ли', 'бы'] },
   ka: { after: ['და', 'ან', 'თუ', 'არ', 'ნუ', 'რომ'], before: ['კი'] },
+  en: { after: /^(a|an|the)$/i, before: [] },
 };
 
 const matches = (rule, word) => (rule instanceof RegExp ? rule.test(word) : rule.includes(word));
@@ -19,8 +20,8 @@ export function typeset(text, lang) {
   const parts = text.split(' ');
   let out = parts[0];
   for (let i = 1; i < parts.length; i += 1) {
-    const prev = parts[i - 1].replace(/^[«„(*]+/, '');
-    const next = parts[i].replace(/[».,:;!?)*“]+$/, '');
+    const prev = parts[i - 1].replace(/^[«„“(*]+/, '');
+    const next = parts[i].replace(/[».,:;!?)*“”]+$/, '');
     const glue =
       /\d$/.test(prev) || // 40 minutes
       next === '—' || // never start a line with a dash

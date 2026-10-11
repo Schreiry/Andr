@@ -82,12 +82,14 @@ async function main() {
       }
 
       const out = (ext, suffix) => path.join(paths.dist, outputName(lang, ext, suffix));
-      await exportPoster(browser, htmlFile, {
+      const scale = await exportPoster(browser, htmlFile, {
         pdfFile: out('pdf'),
         pngs: pngExports.map(({ suffix, widthPx }) => ({ file: out('png', suffix), widthPx })),
       });
       await writeFile(out('docx'), await renderDocx(doc, { source }));
-      console.log(`✓ ${lang}: ${path.relative(paths.root, out('pdf'))}, PNG ×${pngExports.length}, DOCX`);
+      console.log(
+        `✓ ${lang}: ${path.relative(paths.root, out('pdf'))}, PNG ×${pngExports.length}, DOCX (text scale ${scale})`,
+      );
     }
   } finally {
     await browser?.close();

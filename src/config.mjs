@@ -42,6 +42,13 @@ export const fontStackFor = (lang) => fontStacks[lang] ?? fontStacks.default;
 export const page = { widthMm: 210, heightMm: 297 };
 
 /**
+ * Text auto-fit: the export picks the largest text scale in [minScale, maxScale]
+ * at which the whole poster still fits, so short and long languages both fill
+ * the page. Below minScale the build fails instead of printing tiny text.
+ */
+export const textFit = { minScale: 0.92, maxScale: 1.2, steps: 9 };
+
+/**
  * Raster exports. `widthPx` is the output width; height follows the A4 ratio.
  * Add an entry here to get another PNG size, no code changes needed.
  */

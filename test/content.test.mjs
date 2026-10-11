@@ -20,7 +20,11 @@ const docs = new Map(
 );
 
 const QUOTES = { ru: ['«', '»'], ka: ['„', '“'] };
-const FOREIGN_LETTERS = { ka: /[A-Za-zА-Яа-яЁё]/, ru: /[A-Za-zႠ-ჿᲐ-Ჿ]/ };
+const FOREIGN_LETTERS = {
+  ka: /[A-Za-zА-Яа-яЁё]/,
+  ru: /[A-Za-z\u10A0-\u10FF\u1C90-\u1CBF]/,
+  en: /[А-Яа-яЁё\u10A0-\u10FF\u1C90-\u1CBF]/,
+};
 
 describe('layout', () => {
   it('uses unique section and item ids', () => {
@@ -55,6 +59,7 @@ for (const lang of langs) {
     it('uses typographic punctuation', () => {
       for (const [key, text] of entries) {
         assert.doesNotMatch(text, /"/, `${key}: straight quote`);
+        assert.doesNotMatch(text, /'/, `${key}: straight apostrophe, use "’"`);
         assert.doesNotMatch(text, / {2}|^\s|\s$/, `${key}: stray spaces`);
         assert.doesNotMatch(text, / - /, `${key}: hyphen used as a dash, use "—"`);
         assert.doesNotMatch(text, /\.\./, `${key}: double period`);

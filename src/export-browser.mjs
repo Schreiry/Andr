@@ -1,0 +1,72 @@
+import { pathToFileURL } from 'node:url';
+import { chromium } from 'playwright';
+import { page as pageSize } from './config.mjs';
+
+const MM_TO_CSS_PX = 96 / 25.4;
+const viewport = {
+  width: Math.ceil(pageSize.widthMm * MM_TO_CSS_PX),
+  height: Math.ceil(pageSize.heightMm * MM_TO_CSS_PX),
+};
+
+/** Runs inside the page: lists every element that does not fit its box. */
+function findOverflow() {
+  const TOLERANCE = 0.5; // px
+  const problems = [];
+  const describe = (el) =>
+    el.closest('[data-item]')?.dataset.item ?? el.closest('[data-section]')?.dataset.section ?? el.className;
+  const check = (container, label) => {
+    const box = container.getBoundingClientRect();
+    const style = getComputedStyle(container);
+    const inner = {
+      top: box.top + parseFloat(style.paddingTop) - TOLERANCE,
+      bottom: box.bottom - parseFloat(style.paddingBottom) + TOLERANCE,
+      left: box.left - TOLERANCE,
+      right: box.right + TOLERANCE,
+    };
+    for (const el of container.querySelectorAll('*')) {
+      if (el.closest('svg') && el.tagName !== 'svg') continue;
+      const r = el.getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) continue;
+      if (r.bottom > inner.bottom || r.right > inner.right || r.left < inner.left) {
+        problems.push(
+          `${label}: "${describe(el)}" sticks out by ${Math.round(Math.max(r.bottom - inner.bottom, r.right - inner.right, inner.left - r.left))}px`,
+        );
+        break;
+      }
+    }
+  };
+  check(document.querySelector('.page'), 'page');
+  for (const el of document.querySelectorAll('[data-fit]')) check(el, el.className);
+  return problems;
+}
+
+/** Opens one HTML poster, verifies the layout and writes the requested files. */
+export async function exportPoster(browser, htmlFile, { pdfFile, pngs = [] }) {
+  const url = pathToFileURL(htmlFile).href;
+  const open = async (deviceScaleFactor = 1) => {
+    const context = await browser.newContext({ viewport, deviceScaleFactor });
+    const tab = await context.newPage();
+    await tab.goto(url, { waitUntil: 'load' });
+    await tab.waitForSelector('html[data-ready]');
+    return { context, tab };
+  };
+
+  const { context, tab } = await open();
+  const problems = await tab.evaluate(findOverflow);
+  if (problems.length) {
+    await context.close();
+    throw new Error(`Layout does not fit (${htmlFile}):\n  ${problems.join('\n  ')}`);
+  }
+  if (pdfFile) {
+    await tab.pdf({ path: pdfFile, preferCSSPageSize: true, printBackground: true });
+  }
+  await context.close();
+
+  for (const { file, widthPx } of pngs) {
+    const shot = await open(widthPx / (pageSize.widthMm * MM_TO_CSS_PX));
+    await shot.tab.locator('.page').screenshot({ path: file });
+    await shot.context.close();
+  }
+}
+
+export const launchBrowser = () => chromium.launch();

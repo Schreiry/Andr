@@ -1,0 +1,118 @@
+{
+  "$comment": "Language-independent structure of the poster. Texts live in content/locales/<lang>.json under the same ids. Order here is the reading order. A section with \"enabled\": false is kept ready but not printed; set it to true to show it.",
+  "sections": [
+    {
+      "id": "services",
+      "kind": "columns",
+      "region": "main",
+      "columns": [
+        ["arrival", "walkIn", "duration", "takeaway", "pets"],
+        ["ownTea", "oneTea", "boiling", "damage"]
+      ]
+    },
+    {
+      "id": "contacts",
+      "kind": "inline",
+      "region": "main",
+      "enabled": false,
+      "items": [
+        {
+          "id": "phone",
+          "icon": "phone"
+        },
+        {
+          "id": "instagram",
+          "icon": "brand-instagram"
+        }
+      ]
+    },
+    {
+      "id": "forbidden",
+      "kind": "forbidden",
+      "region": "main",
+      "items": [
+        {
+          "id": "smoking",
+          "icon": "smoking-no"
+        },
+        {
+          "id": "alcohol",
+          "icon": "bottle-off"
+        },
+        {
+          "id": "food",
+          "icon": "tools-kitchen-2-off"
+        }
+      ]
+    },
+    {
+      "id": "atmosphere",
+      "kind": "iconList",
+      "region": "panel",
+      "items": [
+        {
+          "id": "silent",
+          "icon": "bell-off"
+        },
+        {
+          "id": "headphones",
+          "icon": "headphones"
+        },
+        {
+          "id": "voice",
+          "icon": "volume"
+        },
+        {
+          "id": "calls",
+          "icon": "video-off"
+        },
+        {
+          "id": "photo",
+          "icon": "bolt-off"
+        }
+      ]
+    },
+    {
+      "id": "respect",
+      "kind": "iconList",
+      "region": "panel",
+      "items": [
+        {
+          "id": "privacy",
+          "icon": "message-circle-off"
+        },
+        {
+          "id": "perfume",
+          "icon": "perfume"
+        },
+        {
+          "id": "intimacy",
+          "icon": "heart-off"
+        }
+      ]
+    },
+    {
+      "id": "comfort",
+      "kind": "iconList",
+      "region": "panel",
+      "items": [
+        {
+          "id": "outerwear",
+          "icon": "hanger"
+        },
+        {
+          "id": "valuables",
+          "icon": "diamond"
+        },
+        {
+          "id": "shoeCovers",
+          "icon": "shoe"
+        },
+        {
+          "id": "slippers",
+          "icon": "slippers"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+/* Poster layout. Sizes are physical (mm/pt): the page is printed on A4.
+   Font weights (400/700/850) and stretches (80%/72%) must match the static
+   instances listed in assets/fonts/faces.json. */
+
+:root {
+  --ink: #000;
+  --gold: #d9a946;
+  --page-w: 210mm;
+  --page-h: 297mm;
+  --margin-x: 10.5mm;
+  --panel-w: 82mm;
+  --gap: 7mm;
+  --body-size: 9.6pt;
+  --body-leading: 1.3;
+  --body-stretch: 80%;
+  --heading-stretch: 72%;
+  --heading-weight: 850;
+}
+
+@page {
+  size: 210mm 297mm;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: #fff;
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  font-stretch: var(--body-stretch);
+  color: var(--ink);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+strong {
+  font-weight: 700;
+}
+
+[data-pattern='paper'] {
+  background-image: var(--pattern-paper);
+  background-size: var(--page-w) var(--page-h);
+  background-repeat: no-repeat;
+}
+
+[data-pattern='panel'] {
+  background-image: var(--pattern-panel);
+  background-size: var(--page-w) var(--page-h);
+  background-repeat: no-repeat;
+}
+
+.page {
+  position: relative;
+  width: var(--page-w);
+  height: var(--page-h);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 33mm var(--margin-x) 10mm;
+}
+
+/* ---- Header ---------------------------------------------------------- */
+
+.logo {
+  position: absolute;
+  top: 5mm;
+  left: 50%;
+  width: 58mm;
+  transform: translateX(-50%);
+}
+
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr var(--panel-w);
+  column-gap: var(--gap);
+  align-items: start;
+}
+
+.title {
+  font-size: 29pt;
+  line-height: 1.08;
+  font-weight: var(--heading-weight);
+  font-stretch: var(--heading-stretch);
+  letter-spacing: 0.01em;
+}
+
+.title__line {
+  display: block;
+}
+
+.title__leaf {
+  height: 0.62em;
+  margin-left: 0.3em;
+  vertical-align: 0.05em;
+}
+
+.intro {
+  padding-top: 1mm;
+  font-size: 9.8pt;
+  line-height: 1.3;
+}
+
+.intro__lead {
+  display: block;
+  font-size: 10.6pt;
+}
+
+/* ---- Body ------------------------------------------------------------- */
+
+.content {
+  flex: 1;
+  min-height: 0;
+  margin-top: 9mm;
+  display: grid;
+  grid-template-columns: 1fr var(--panel-w);
+  column-gap: var(--gap);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Minimum distance between blocks; the box below still sticks to the bottom. */
+.main > :not(:last-child) {
+  margin-bottom: 5mm;
+}
+
+.heading {
+  font-weight: var(--heading-weight);
+  font-stretch: var(--heading-stretch);
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+}
+
+.heading--section {
+  font-size: 19pt;
+  margin: 3.5mm 0 5mm;
+}
+
+.heading--block {
+  font-size: 13pt;
+  margin-bottom: 3.2mm;
+}
+
+/* Service terms: two columns of short paragraphs. */
+
+.services__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6mm;
+}
+
+.rule + .rule {
+  margin-top: 3.8mm;
+}
+
+/* "Not allowed" box with a dotted frame and the label sitting on the frame. */
+
+.forbidden {
+  --title-half: 2.7mm; /* half of the label line: the frame runs through it */
+  position: relative;
+  margin-top: auto;
+  padding: 0 6mm 6mm 5.5mm;
+}
+
+.forbidden__frame {
+  position: absolute;
+  top: var(--title-half);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--title-half));
+  overflow: visible;
+}
+
+.forbidden__frame rect {
+  x: 0.7mm;
+  y: 0.7mm;
+  width: calc(100% - 1.4mm);
+  height: calc(100% - 1.4mm);
+  rx: 3.5mm;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.3mm;
+  stroke-linecap: round;
+  stroke-dasharray: 0 2.9mm;
+}
+
+.forbidden__title {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 6mm -5.5mm;
+  padding: 0 2.5mm 0 3mm;
+  font-size: 12.5pt;
+  line-height: 1.25;
+  font-weight: var(--heading-weight);
+  font-stretch: var(--heading-stretch);
+  color: var(--gold);
+}
+
+.forbidden__list {
+  list-style: none;
+  display: grid;
+  gap: 3.2mm;
+}
+
+.forbidden__item {
+  display: grid;
+  grid-template-columns: 9mm 1fr;
+  column-gap: 3.5mm;
+  align-items: center;
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  width: 9mm;
+  height: 9mm;
+  border: 0.45mm solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold);
+}
+
+.badge svg {
+  width: 5.6mm;
+  height: 5.6mm;
+  stroke-width: 1.6;
+}
+
+/* Panel with request lists and icons. */
+
+.panel {
+  border-radius: 4.5mm;
+  padding: 7mm 5.5mm 6mm 6mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5mm;
+}
+
+.icon-list {
+  list-style: none;
+}
+
+.icon-list__item {
+  display: grid;
+  grid-template-columns: 7mm 1fr;
+  column-gap: 3mm;
+  align-items: start;
+}
+
+.icon-list__item + .icon-list__item {
+  margin-top: 2.8mm;
+}
+
+.icon {
+  color: var(--gold);
+  line-height: 0;
+}
+
+.icon svg {
+  width: 6.4mm;
+  height: 6.4mm;
+  stroke-width: 1.5;
+}
+
+/* One-line note (e.g. booking contacts) between the service terms and the box. */
+
+.inline-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5mm 5mm;
+}
+
+.inline-note__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.8mm;
+}
+
+.icon--small svg {
+  width: 5mm;
+  height: 5mm;
+}

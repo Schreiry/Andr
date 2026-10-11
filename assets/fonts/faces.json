@@ -1,0 +1,12 @@
+{
+  "$comment": "Static font instances used by the poster. Regenerate with: python3 -I tools/make_font_instances.py assets/fonts. CSS font-weight/font-stretch values must match an instance here.",
+  "families": {
+    "Noto Sans Georgian": "NotoSansGeorgian",
+    "Noto Sans": "NotoSans"
+  },
+  "instances": [
+    { "name": "Regular", "wght": 400, "wdth": 80 },
+    { "name": "Bold", "wght": 700, "wdth": 80 },
+    { "name": "Heavy", "wght": 850, "wdth": 72 }
+  ]
+}

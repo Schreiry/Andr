@@ -1,0 +1,18 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-custom-slippers"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7.5 3c-1.66 0 -3 1.9 -3 4.25v9.5c0 2.35 1.34 4.25 3 4.25s3 -1.9 3 -4.25v-9.5c0 -2.35 -1.34 -4.25 -3 -4.25z" />
+  <path d="M16.5 3c-1.66 0 -3 1.9 -3 4.25v9.5c0 2.35 1.34 4.25 3 4.25s3 -1.9 3 -4.25v-9.5c0 -2.35 -1.34 -4.25 -3 -4.25z" />
+  <path d="M4.5 8.5c1.8 1 4.2 1 6 0" />
+  <path d="M13.5 8.5c1.8 1 4.2 1 6 0" />
+</svg>

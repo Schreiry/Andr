@@ -67,7 +67,7 @@ PH_RPR = f'<w:rPr><w:rFonts w:ascii="{FONT}" w:hAnsi="{FONT}" w:cs="{FONT}"/><w:
 def sdt(kind, tag, alias, placeholder, items=None, multiline=False):
     """Инлайн-элемент управления содержимым (Content Control)."""
     if kind == "dd":
-        li = '<w:listItem w:displayText="" w:value=""/>' + "".join(
+        li = "".join(
             f'<w:listItem w:displayText="{escape(x)}" w:value="{escape(x)}"/>' for x in items)
         spec = f"<w:dropDownList>{li}</w:dropDownList>"
     elif kind == "date":
@@ -108,8 +108,8 @@ def table(rows):
     b = "".join(f'<w:{s} w:val="single" w:sz="4" w:space="0" w:color="C9D3CE"/>' for s in
                 ["top", "left", "bottom", "right", "insideH", "insideV"])
     grid = "".join(f'<w:gridCol w:w="{x}"/>' for x in W)
-    return (f'<w:tbl {NS}><w:tblPr><w:tblW w:w="{sum(W)}" w:type="dxa"/><w:tblLayout w:type="fixed"/>'
-            f'<w:tblBorders>{b}</w:tblBorders><w:tblCellMar><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar>'
+    return (f'<w:tbl {NS}><w:tblPr><w:tblW w:w="{sum(W)}" w:type="dxa"/><w:tblBorders>{b}</w:tblBorders>'
+            f'<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar>'
             f'</w:tblPr><w:tblGrid>{grid}</w:tblGrid>{"".join(rows)}</w:tbl>')
 
 def card_table(n):
@@ -261,7 +261,7 @@ def main():
                     + rc(RW[3], ref(f"e{k}"), fill) + rc(RW[4], ref(f"r{k}"), fill) + rc(RW[5], ref(f"c{k}"), fill)
                     + rc(RW[6], ref(f"a{k}") + rt(" · ", "9A9A9A") + ref(f"s{k}"), fill) + "</w:tr>")
     b = "".join(f'<w:{x} w:val="single" w:sz="4" w:space="0" w:color="C9D3CE"/>' for x in ["top", "left", "bottom", "right", "insideH", "insideV"])
-    reg = (f'<w:tbl {NS}><w:tblPr><w:tblW w:w="10206" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblBorders>{b}</w:tblBorders>'
+    reg = (f'<w:tbl {NS}><w:tblPr><w:tblW w:w="10206" w:type="dxa"/><w:tblBorders>{b}</w:tblBorders><w:tblLayout w:type="fixed"/>'
            f'<w:tblCellMar><w:left w:w="60" w:type="dxa"/><w:right w:w="60" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'
            + "".join(f'<w:gridCol w:w="{w}"/>' for w in RW) + "</w:tblGrid>" + "".join(rows) + "</w:tbl>")
     body = doc.element.body
@@ -281,6 +281,8 @@ def main():
         pp.paragraph_format.space_after = Pt(4)
         picture_sdt(pp, img, 17, k)
         body.insert(len(body) - 1, parse_xml(card_table(n)))
+    z = doc.settings.element.find(qn("w:zoom"))
+    if z is not None: z.set(qn("w:percent"), "100")
     doc.save(OUT)
     print("OK:", OUT, COUNT, "карточек")
 
